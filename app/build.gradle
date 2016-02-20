@@ -1,0 +1,47 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+
+android {
+  compileSdkVersion 23
+  buildToolsVersion "23.0.2"
+
+  defaultConfig {
+    applicationId "ddiehl.android.imgurtest"
+    minSdkVersion 16
+    targetSdkVersion 23
+    versionCode 1
+    versionName "1.0"
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  testCompile 'junit:junit:4.12'
+  compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+  compile "org.jetbrains.anko:anko-sdk19:$anko_version"
+  compile "org.jetbrains.anko:anko-support-v4:$anko_version"
+  compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+  compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
+//  compile "org.jetbrains.kotlin:kotlin-reflect:$kotlin_version"
+  compile "com.android.support:support-v4:$support_version"
+  compile "com.android.support:support-annotations:$support_version"
+  compile "com.android.support:recyclerview-v7:$support_version"
+  compile "com.android.support:design:$support_version"
+  compile "com.android.support:appcompat-v7:$support_version"
+  compile "com.jakewharton.timber:timber:4.1.0"
+  compile "io.reactivex:rxjava:1.1.0"
+  compile "io.reactivex:rxandroid:1.1.0"
+  compile "io.reactivex:rxkotlin:0.40.1"
+}
+repositories {
+  mavenCentral()
+}
