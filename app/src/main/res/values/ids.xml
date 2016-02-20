@@ -2,4 +2,5 @@
 <resources>
   <item type="id" name="fragment"/>
   <item type="id" name="recycler_view"/>
+  <item type="id" name="image_view"/>
 </resources>

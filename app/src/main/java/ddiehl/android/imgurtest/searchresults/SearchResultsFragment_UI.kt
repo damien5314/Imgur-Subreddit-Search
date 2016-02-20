@@ -1,7 +1,8 @@
-package ddiehl.android.imgurtest
+package ddiehl.android.imgurtest.searchresults
 
 import android.support.v7.widget.GridLayoutManager
 import android.view.View
+import ddiehl.android.imgurtest.R
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
@@ -17,6 +18,7 @@ class SearchResultsFragment_UI : AnkoComponent<SearchResultsFragment> {
           height = matchParent
         }
         layoutManager = GridLayoutManager(ui.ctx, 3, GridLayoutManager.VERTICAL, false)
+//        layoutManager = LinearLayoutManager(ui.ctx)
       }
     }.view
 }

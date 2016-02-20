@@ -3,6 +3,7 @@ package ddiehl.android.imgurtest
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import ddiehl.android.imgurtest.searchresults.SearchResultsFragment
 import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity() {
