@@ -1,7 +1,10 @@
 package ddiehl.android.imgurtest.api
 
-import com.google.gson.Gson
-import ddiehl.android.imgurtest.model.ImageResponse
+import com.google.gson.GsonBuilder
+import ddiehl.android.imgurtest.BuildConfig
+import ddiehl.android.imgurtest.model.AbsGalleryItem
+import ddiehl.android.imgurtest.model.GalleryAlbum
+import ddiehl.android.imgurtest.model.GalleryDeserializer
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -19,20 +22,36 @@ class ImgurServiceImpl : ImgurService {
   private val mAPI: ImgurAPI
 
   constructor() {
+    val gson = GsonBuilder()
+        .registerTypeAdapter(AbsGalleryItem::class.java, GalleryDeserializer())
+        .create()
     val client = OkHttpClient.Builder()
         .addInterceptor(LoggingInterceptor())
+        .addInterceptor {
+          chain ->
+          chain.proceed(
+              chain.request().newBuilder()
+                  .removeHeader("Authorization")
+                  .addHeader("Authorization", "Client-ID " + BuildConfig.IMGUR_CLIENT_ID)
+                  .build())
+        }
         .build()
     mAPI = Retrofit.Builder()
         .baseUrl(BASE_URL)
         .client(client)
-        .addConverterFactory(GsonConverterFactory.create(Gson()))
+        .addConverterFactory(GsonConverterFactory.create(gson))
         .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
         .build().create(ImgurAPI::class.java)
   }
 
   override fun getGallery(section: String, sort: String, page: Int)
-      : Observable<Response<ImageResponse>> =
+      : Observable<Response<AbsGalleryItem.Response>> =
       mAPI.getGallery(section, sort, page)
+          .subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
+
+  override fun getAlbum(id: String): Observable<Response<GalleryAlbum.Response>> =
+      mAPI.getAlbum(id)
           .subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
 }

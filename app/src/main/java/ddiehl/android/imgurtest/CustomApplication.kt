@@ -23,7 +23,7 @@ class CustomApplication : Application {
       Picasso.setSingletonInstance(
           Picasso.Builder(this)
 //              .indicatorsEnabled(true)
-//              .loggingEnabled(true)
+              .loggingEnabled(true)
               .build())
     }
   }

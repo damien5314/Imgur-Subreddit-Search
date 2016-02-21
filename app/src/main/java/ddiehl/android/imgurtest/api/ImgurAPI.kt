@@ -1,20 +1,23 @@
 package ddiehl.android.imgurtest.api
 
-import ddiehl.android.imgurtest.BuildConfig
-import ddiehl.android.imgurtest.model.ImageResponse
+import ddiehl.android.imgurtest.model.AbsGalleryItem
+import ddiehl.android.imgurtest.model.GalleryAlbum
 import retrofit2.Response
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import rx.Observable
 
 interface ImgurAPI {
 
   @GET("/3/{section}/{sort}/{page}")
-  @Headers("Authorization: Client-ID " + BuildConfig.IMGUR_CLIENT_ID)
   fun getGallery(
       @Path("section") section: String,
       @Path("sort") sort: String,
-      @Path("page") page: Int): Observable<Response<ImageResponse>>
+      @Path("page") page: Int): Observable<Response<AbsGalleryItem.Response>>
+
+  @GET("/3/gallery/album/{id}")
+  fun getAlbum(
+      @Path("id") id: String
+  ): Observable<Response<GalleryAlbum.Response>>
 
 }

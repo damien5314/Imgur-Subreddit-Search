@@ -7,7 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ddiehl.android.imgurtest.R
-import ddiehl.android.imgurtest.model.Image
+import ddiehl.android.imgurtest.album.ViewAlbumDialog
+import ddiehl.android.imgurtest.model.AbsGalleryItem
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find
 
@@ -39,7 +40,12 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
     super.onPause()
   }
 
-  override fun showImages(list: List<Image>) {
+  override fun showImages(list: List<AbsGalleryItem>) {
     mAdapter.notifyItemRangeInserted(0, list.size)
+  }
+
+  override fun showAlbum(albumId: String) {
+    ViewAlbumDialog.newInstance(albumId)
+        .show(activity.supportFragmentManager, "album_fragment")
   }
 }
