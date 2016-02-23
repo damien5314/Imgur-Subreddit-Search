@@ -33,7 +33,7 @@ class GalleryAlbum(
     val images: Array<GalleryImage>
 ) : AbsGalleryItem() {
   class Response (
-      @Expose val data: List<GalleryAlbum>,
+      @Expose val data: GalleryAlbum,
       @Expose val success: Boolean,
       @Expose val code: Int
   )

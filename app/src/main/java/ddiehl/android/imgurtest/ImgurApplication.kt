@@ -6,7 +6,7 @@ import com.squareup.picasso.Picasso
 import ddiehl.android.imgurtest.api.ImgurServiceImpl
 import timber.log.Timber
 
-class CustomApplication : Application {
+class ImgurApplication : Application {
   companion object {
     var context: Context? = null
     val imgurService = ImgurServiceImpl()
@@ -23,7 +23,7 @@ class CustomApplication : Application {
       Picasso.setSingletonInstance(
           Picasso.Builder(this)
 //              .indicatorsEnabled(true)
-              .loggingEnabled(true)
+//              .loggingEnabled(true)
               .build())
     }
   }

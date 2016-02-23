@@ -1,13 +1,15 @@
 package ddiehl.android.imgurtest.searchresults
 
-import ddiehl.android.imgurtest.CustomApplication
+import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.model.AbsGalleryItem
+import ddiehl.android.imgurtest.model.GalleryAlbum
+import ddiehl.android.imgurtest.model.GalleryImage
 import timber.log.Timber
 import java.util.*
 
 class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPresenter {
 
-  private val mImgurService = CustomApplication.imgurService
+  private val mImgurService = ImgurApplication.imgurService
   private val mData: MutableList<AbsGalleryItem> = ArrayList()
   private var mPage = 0
 
@@ -37,7 +39,11 @@ class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPr
   override fun getNumImages(): Int = mData.size
   override fun getItemAt(position: Int): AbsGalleryItem = mData[position]
 
-  override fun onAlbumClicked(albumId: String) {
-    mView.showAlbum(albumId)
+  override fun onAlbumClicked(album: GalleryAlbum) {
+    mView.showAlbum(album.id)
+  }
+
+  override fun onImageClicked(image: GalleryImage) {
+    mView.showImage(image.link)
   }
 }

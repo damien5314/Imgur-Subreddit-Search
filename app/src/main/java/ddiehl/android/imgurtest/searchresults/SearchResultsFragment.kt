@@ -48,4 +48,9 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
     ViewAlbumDialog.newInstance(albumId)
         .show(activity.supportFragmentManager, "album_fragment")
   }
+
+  override fun showImage(link: String) {
+    ViewImageDialog.newInstance(link)
+        .show(activity.supportFragmentManager, "image_fragment")
+  }
 }

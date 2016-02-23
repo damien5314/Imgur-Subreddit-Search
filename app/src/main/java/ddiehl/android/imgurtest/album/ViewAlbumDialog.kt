@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import ddiehl.android.imgurtest.R
@@ -13,10 +14,6 @@ import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class ViewAlbumDialog : DialogFragment(), AlbumView {
-
-  private lateinit var mRecyclerView: RecyclerView
-  private lateinit var mAlbumPresenter: AlbumPresenter
-
   companion object {
     private val ARG_ALBUM_ID = "arg_album_id"
 
@@ -29,6 +26,9 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
     }
   }
 
+  private lateinit var mRecyclerView: RecyclerView
+  private lateinit var mAlbumPresenter: AlbumPresenter
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val albumId = arguments.getString(ARG_ALBUM_ID)
@@ -38,6 +38,7 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return Dialog(activity, R.style.DialogOverlay).apply {
       setContentView(mView)
+      mRecyclerView.adapter = GalleryAlbumAdapter(mAlbumPresenter)
     }
   }
 
@@ -63,6 +64,7 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
             width = matchParent
             height = matchParent
           }
+          layoutManager = LinearLayoutManager(ui.ctx)
         }
       }.view
     }

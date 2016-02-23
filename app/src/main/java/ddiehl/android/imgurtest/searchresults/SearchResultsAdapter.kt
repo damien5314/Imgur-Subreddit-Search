@@ -5,7 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
-import ddiehl.android.imgurtest.CustomApplication
+import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
@@ -38,37 +38,38 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
   override fun onCreateViewHolder(parent: ViewGroup, type: Int): RecyclerView.ViewHolder? {
     when (type) {
       TYPE_IMAGE -> return GalleryImageVH(VH_UI().createView(
-          AnkoContext.create(parent.context, this)))
+          AnkoContext.create(parent.context, this)), mPresenter)
       TYPE_ALBUM -> return GalleryAlbumVH(VH_UI().createView(
           AnkoContext.create(parent.context, this)), mPresenter)
     }
     return null
   }
 
-  private class GalleryImageVH(val view: View) : RecyclerView.ViewHolder(view) {
+  private class GalleryImageVH(val view: View, val mPresenter: SearchResultsPresenter) :
+      RecyclerView.ViewHolder(view) {
     val imageView: ImageView = view.find<ImageView>(R.id.image_view)
 
     fun bind(image: GalleryImage) {
-      Picasso.with(CustomApplication.context)
+      imageView.setOnClickListener { mPresenter.onImageClicked(image) }
+      Picasso.with(ImgurApplication.context)
           .load(image.getMediumThumbnailLink())
           .fit()
           .centerCrop()
           .into(imageView)
-      imageView.setOnClickListener { }
     }
   }
 
-  private class GalleryAlbumVH(val mView: View, val mPresenter: SearchResultsPresenter)
-        : RecyclerView.ViewHolder(mView) {
+  private class GalleryAlbumVH(val mView: View, val mPresenter: SearchResultsPresenter) :
+      RecyclerView.ViewHolder(mView) {
     val imageView: ImageView = mView.find<ImageView>(R.id.image_view)
 
     fun bind(album: GalleryAlbum) {
-      Picasso.with(CustomApplication.context)
+      imageView.setOnClickListener { mPresenter.onAlbumClicked(album) }
+      Picasso.with(ImgurApplication.context)
           .load(album.getLargeCover())
           .fit()
           .centerCrop()
           .into(imageView)
-      imageView.setOnClickListener { mPresenter.onAlbumClicked(album.id) }
     }
   }
 
