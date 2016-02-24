@@ -29,7 +29,8 @@ class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPr
         .subscribe(
             { imageResponse ->
               mData.addAll(imageResponse.body().data)
-              mView.showImages(mData)},
+              mView.showImages(mData)
+            },
             { error ->
               Timber.e(error, "Error occurred while loading images")
             }
@@ -44,6 +45,6 @@ class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPr
   }
 
   override fun onImageClicked(image: GalleryImage) {
-    mView.showImage(image.link)
+    mView.showImage(image.getLink())
   }
 }

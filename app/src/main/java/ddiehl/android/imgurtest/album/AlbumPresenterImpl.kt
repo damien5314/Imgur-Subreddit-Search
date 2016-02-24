@@ -26,7 +26,9 @@ class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPres
             { response ->
               val album = response.body().data
               mData.addAll(album.images)
-            }, { error -> mView.showToast(R.string.error_get_album) }
+              mView.showImages(album.images)
+            },
+            { mView.showToast(R.string.error_get_album) }
         )
   }
 

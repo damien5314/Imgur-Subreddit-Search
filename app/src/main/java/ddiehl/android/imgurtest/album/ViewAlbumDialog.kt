@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import ddiehl.android.imgurtest.R
+import ddiehl.android.imgurtest.model.GalleryImage
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
@@ -28,6 +29,7 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
 
   private lateinit var mRecyclerView: RecyclerView
   private lateinit var mAlbumPresenter: AlbumPresenter
+  private lateinit var mAlbumAdapter: GalleryAlbumAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -38,7 +40,8 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
     return Dialog(activity, R.style.DialogOverlay).apply {
       setContentView(mView)
-      mRecyclerView.adapter = GalleryAlbumAdapter(mAlbumPresenter)
+      mAlbumAdapter = GalleryAlbumAdapter(mAlbumPresenter)
+      mRecyclerView.adapter = mAlbumAdapter
     }
   }
 
@@ -49,6 +52,10 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
 
   override fun onPause() {
     super.onPause()
+  }
+
+  override fun showImages(images: Array<GalleryImage>) {
+    mAlbumAdapter.notifyDataSetChanged()
   }
 
   override fun showToast(stringRes: Int) {

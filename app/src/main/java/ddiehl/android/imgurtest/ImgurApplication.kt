@@ -2,7 +2,6 @@ package ddiehl.android.imgurtest
 
 import android.app.Application
 import android.content.Context
-import com.squareup.picasso.Picasso
 import ddiehl.android.imgurtest.api.ImgurServiceImpl
 import timber.log.Timber
 
@@ -20,11 +19,11 @@ class ImgurApplication : Application {
     super.onCreate()
     if (BuildConfig.DEBUG) {
       Timber.plant(Timber.DebugTree())
-      Picasso.setSingletonInstance(
-          Picasso.Builder(this)
+//      Picasso.setSingletonInstance(
+//          Picasso.Builder(this)
 //              .indicatorsEnabled(true)
 //              .loggingEnabled(true)
-              .build())
+//              .build())
     }
   }
 }

@@ -16,7 +16,7 @@ class GalleryImage(
     val views: Int,
     val bandwidth: Long,
     val deletehash: String?,
-    @Expose val link: String,
+    private @Expose val link: String,
     val gifv: String?,
     val mp4: String?,
     val webm: String?,
@@ -37,6 +37,7 @@ class GalleryImage(
     val score: Int
 //    @Expose @SerializedName("is_album") val isAlbum: Boolean = false
 ) : AbsGalleryItem() {
+  fun getLink() = String.format("http://i.imgur.com/%s.jpg", id)
   fun getSmallThumbnailLink() = getThumbnailLink("t")
   fun getMediumThumbnailLink() = getThumbnailLink("m")
   fun getLargeThumbnailLink() = getThumbnailLink("l")

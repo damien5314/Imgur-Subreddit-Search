@@ -4,11 +4,12 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import com.squareup.picasso.Picasso
+import com.bumptech.glide.Glide
 import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.squareImageView
 import org.jetbrains.anko.*
 import timber.log.Timber
 
@@ -51,10 +52,10 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
 
     fun bind(image: GalleryImage) {
       imageView.setOnClickListener { mPresenter.onImageClicked(image) }
-      Picasso.with(ImgurApplication.context)
+      Glide.with(ImgurApplication.context)
           .load(image.getMediumThumbnailLink())
-          .fit()
           .centerCrop()
+//          .listener(LoggingListener<String, GlideDrawable>())
           .into(imageView)
     }
   }
@@ -65,10 +66,10 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
 
     fun bind(album: GalleryAlbum) {
       imageView.setOnClickListener { mPresenter.onAlbumClicked(album) }
-      Picasso.with(ImgurApplication.context)
+      Glide.with(ImgurApplication.context)
           .load(album.getLargeCover())
-          .fit()
           .centerCrop()
+//          .listener(LoggingListener<String, GlideDrawable>())
           .into(imageView)
     }
   }
@@ -81,11 +82,11 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
               width = matchParent
               height = wrapContent
             }
-            imageView {
+            squareImageView {
               id = R.id.image_view
               lparams {
                 width = matchParent
-                height = dip(128)
+                height = dip(0)
               }
             }
           }
