@@ -1,11 +1,12 @@
 package ddiehl.android.imgurtest.searchresults
 
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
-import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
@@ -46,16 +47,17 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
     return null
   }
 
-  private class GalleryImageVH(val view: View, val mPresenter: SearchResultsPresenter) :
-      RecyclerView.ViewHolder(view) {
-    val imageView: ImageView = view.find<ImageView>(R.id.image_view)
+  private class GalleryImageVH(val mView: View, val mPresenter: SearchResultsPresenter) :
+      RecyclerView.ViewHolder(mView) {
+    val imageView: ImageView = mView.find<ImageView>(R.id.image_view)
+    val imagesCount: TextView = mView.find<TextView>(R.id.images_count)
 
     fun bind(image: GalleryImage) {
       imageView.setOnClickListener { mPresenter.onImageClicked(image) }
-      Glide.with(ImgurApplication.context)
+      imagesCount.visibility = View.GONE
+      Glide.with(mView.context)
           .load(image.getMediumThumbnailLink())
           .centerCrop()
-//          .listener(LoggingListener<String, GlideDrawable>())
           .into(imageView)
     }
   }
@@ -63,13 +65,14 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
   private class GalleryAlbumVH(val mView: View, val mPresenter: SearchResultsPresenter) :
       RecyclerView.ViewHolder(mView) {
     val imageView: ImageView = mView.find<ImageView>(R.id.image_view)
+    val imagesCount: TextView = mView.find<TextView>(R.id.images_count)
 
     fun bind(album: GalleryAlbum) {
       imageView.setOnClickListener { mPresenter.onAlbumClicked(album) }
-      Glide.with(ImgurApplication.context)
+      imagesCount.text = album.imagesCount.toString()
+      Glide.with(mView.context)
           .load(album.getLargeCover())
           .centerCrop()
-//          .listener(LoggingListener<String, GlideDrawable>())
           .into(imageView)
     }
   }
@@ -88,6 +91,17 @@ class SearchResultsAdapter(val mPresenter: SearchResultsPresenter)
                 width = matchParent
                 height = dip(0)
               }
+            }
+            textView {
+              id = R.id.images_count
+              lparams {
+                gravity = Gravity.BOTTOM or Gravity.LEFT
+                margin = dip(8)
+              }
+              gravity = Gravity.CENTER
+              setTextAppearance(android.R.style.TextAppearance_Small)
+//              textColor = R.color.primary_text
+              backgroundResource = R.drawable.images_count_bg
             }
           }
         }.view

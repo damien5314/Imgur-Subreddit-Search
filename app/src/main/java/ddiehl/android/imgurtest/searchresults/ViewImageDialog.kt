@@ -7,7 +7,6 @@ import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.LoggingListener
 import ddiehl.android.imgurtest.R
 import org.jetbrains.anko.*
@@ -32,37 +31,39 @@ class ViewImageDialog() : DialogFragment() {
   }
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    return Dialog(activity, R.style.DialogOverlay).apply {
-      setContentView(mView)
+    return Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen).apply {
+      setContentView(UI().createView(AnkoContext.create(context, this@ViewImageDialog)))
+      mImageView = findViewById(R.id.image_view) as ImageView
     }
   }
 
   override fun onResume() {
     super.onResume()
-    Glide.with(ImgurApplication.context)
+    Glide.with(this)
         .load(mUrl)
         .fitCenter()
+        .error(R.drawable.ic_alert_error)
         .listener(LoggingListener<String, GlideDrawable>())
         .into(mImageView)
   }
 
-  private val mView: View by lazy { object: AnkoComponent<ViewImageDialog> {
+  private class UI: AnkoComponent<ViewImageDialog> {
     override fun createView(ui: AnkoContext<ViewImageDialog>): View {
       return ui.apply {
         frameLayout {
-          mImageView = imageView {
+          lparams {
+            width = matchParent
+            height = matchParent
+          }
+          imageView {
             id = R.id.image_view
             lparams {
               width = matchParent
               height = matchParent
             }
           }
-          lparams {
-            width = matchParent
-            height = matchParent
-          }
         }
       }.view
     }
-  }.createView(AnkoContext.create(activity, this)) }
+  }
 }
