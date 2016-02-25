@@ -4,6 +4,7 @@ import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.api.ImgurService
 import ddiehl.android.imgurtest.model.GalleryImage
+import timber.log.Timber
 import java.util.*
 
 class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPresenter {
@@ -28,7 +29,10 @@ class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPres
               mData.addAll(album.images)
               mView.showImages(album.images)
             },
-            { mView.showToast(R.string.error_get_album) }
+            { error ->
+              mView.showToast(R.string.error_get_album)
+              Timber.e(error, "Error occurred while retrieving album data")
+            }
         )
   }
 

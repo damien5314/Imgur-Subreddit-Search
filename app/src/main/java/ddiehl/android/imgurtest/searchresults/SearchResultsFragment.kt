@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.album.ViewAlbumDialog
+import ddiehl.android.imgurtest.album.ViewImageDialog
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.find

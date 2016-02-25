@@ -1,4 +1,4 @@
-package ddiehl.android.imgurtest.searchresults
+package ddiehl.android.imgurtest.album
 
 import android.app.Dialog
 import android.os.Bundle
@@ -30,13 +30,6 @@ class ViewImageDialog() : DialogFragment() {
     mUrl = arguments.getString(ARG_URL)
   }
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    return Dialog(activity, android.R.style.Theme_Black_NoTitleBar_Fullscreen).apply {
-      setContentView(UI().createView(AnkoContext.create(context, this@ViewImageDialog)))
-      mImageView = findViewById(R.id.image_view) as ImageView
-    }
-  }
-
   override fun onResume() {
     super.onResume()
     Glide.with(this)
@@ -47,23 +40,26 @@ class ViewImageDialog() : DialogFragment() {
         .into(mImageView)
   }
 
-  private class UI: AnkoComponent<ViewImageDialog> {
-    override fun createView(ui: AnkoContext<ViewImageDialog>): View {
-      return ui.apply {
-        frameLayout {
-          lparams {
-            width = matchParent
-            height = matchParent
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+      Dialog(activity, R.style.DialogOverlay).apply {
+        setContentView(object: AnkoComponent<ViewImageDialog> {
+          override fun createView(ui: AnkoContext<ViewImageDialog>): View {
+            return ui.apply {
+              frameLayout {
+                lparams {
+                  width = matchParent
+                  height = matchParent
+                }
+                mImageView = imageView {
+                  id = R.id.image_view
+                  lparams {
+                    width = matchParent
+                    height = matchParent
+                  }
+                }
+              }
+            }.view
           }
-          imageView {
-            id = R.id.image_view
-            lparams {
-              width = matchParent
-              height = matchParent
-            }
-          }
-        }
-      }.view
-    }
-  }
+        }.createView(AnkoContext.create(context, this@ViewImageDialog)))
+      }
 }

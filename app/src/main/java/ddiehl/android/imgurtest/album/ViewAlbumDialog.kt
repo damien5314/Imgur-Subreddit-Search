@@ -4,15 +4,18 @@ import android.app.Dialog
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.app.DialogFragment
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.ViewPager
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.utils.snack
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
-import org.jetbrains.anko.recyclerview.v7.recyclerView
+import org.jetbrains.anko.support.v4.viewPager
 
 class ViewAlbumDialog : DialogFragment(), AlbumView {
   companion object {
@@ -27,53 +30,47 @@ class ViewAlbumDialog : DialogFragment(), AlbumView {
     }
   }
 
-  private lateinit var mRecyclerView: RecyclerView
   private lateinit var mAlbumPresenter: AlbumPresenter
-  private lateinit var mAlbumAdapter: GalleryAlbumAdapter
+  private lateinit var mViewPager: ViewPager
+  private lateinit var mPagerAdapter: FragmentStatePagerAdapter
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val albumId = arguments.getString(ARG_ALBUM_ID)
     mAlbumPresenter = AlbumPresenterImpl(this, albumId)
+    mPagerAdapter = AlbumPagerAdapter(childFragmentManager, mAlbumPresenter)
   }
 
-  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-    return Dialog(activity, R.style.DialogOverlay).apply {
-      setContentView(mView)
-      mAlbumAdapter = GalleryAlbumAdapter(mAlbumPresenter)
-      mRecyclerView.adapter = mAlbumAdapter
-    }
-  }
+  override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
+      Dialog(activity, R.style.DialogOverlay)
 
   override fun onResume() {
     super.onResume()
     mAlbumPresenter.onResume()
   }
 
-  override fun onPause() {
-    super.onPause()
-  }
-
   override fun showImages(images: Array<GalleryImage>) {
-    mAlbumAdapter.notifyDataSetChanged()
+    mPagerAdapter.notifyDataSetChanged()
   }
 
   override fun showToast(stringRes: Int) {
-    Snackbar.make(mView, stringRes, Snackbar.LENGTH_SHORT).show()
+    view?.snack(stringRes, Snackbar.LENGTH_SHORT)
   }
 
-  private val mView: View by lazy { object: AnkoComponent<ViewAlbumDialog> {
-    override fun createView(ui: AnkoContext<ViewAlbumDialog>): View {
-      return ui.apply {
-        mRecyclerView = recyclerView {
-          id = R.id.recycler_view
-          lparams {
-            width = matchParent
-            height = matchParent
-          }
-          layoutManager = LinearLayoutManager(ui.ctx)
+  override fun onCreateView(
+      inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+      object: AnkoComponent<ViewAlbumDialog> {
+        override fun createView(ui: AnkoContext<ViewAlbumDialog>): View {
+          return ui.apply {
+            mViewPager = viewPager {
+              id = R.id.view_pager
+              lparams {
+                width = matchParent
+                height = matchParent
+              }
+              adapter = mPagerAdapter
+            }
+          }.view
         }
-      }.view
-    }
-  }.createView(AnkoContext.create(activity, this)) }
+      }.createView(AnkoContext.create(activity, this))
 }
