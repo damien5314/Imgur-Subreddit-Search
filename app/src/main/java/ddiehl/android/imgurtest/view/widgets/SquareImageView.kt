@@ -1,4 +1,4 @@
-package ddiehl.android.imgurtest
+package ddiehl.android.imgurtest.view.widgets
 
 import android.content.Context
 import android.util.AttributeSet
@@ -20,7 +20,8 @@ class SquareImageView : ImageView {
   }
 }
 
-inline fun ViewManager.squareImageView(): SquareImageView = squareImageView({})
+fun ViewManager.squareImageView(): SquareImageView = squareImageView({})
+
 inline fun ViewManager.squareImageView(init: SquareImageView.() -> Unit): SquareImageView {
   return ankoView({ ctx: Context -> SquareImageView(ctx) }) { init() }
 }

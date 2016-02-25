@@ -30,7 +30,7 @@ class GalleryAlbum(
     val topic: String,
     @SerializedName("topic_id") val topicId: Int,
     @SerializedName("images_count") val imagesCount: Int,
-    val images: Array<GalleryImage>
+    val images: List<GalleryImage>
 ) : AbsGalleryItem() {
   class Response (
       @Expose val data: GalleryAlbum,

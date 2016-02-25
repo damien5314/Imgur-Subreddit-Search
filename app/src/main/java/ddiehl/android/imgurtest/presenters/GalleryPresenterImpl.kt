@@ -1,13 +1,15 @@
-package ddiehl.android.imgurtest.searchresults
+package ddiehl.android.imgurtest.presenters
 
 import ddiehl.android.imgurtest.ImgurApplication
+import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.view.gallery.GalleryView
 import timber.log.Timber
 import java.util.*
 
-class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPresenter {
+class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
 
   private val mImgurService = ImgurApplication.imgurService
   private val mData: MutableList<AbsGalleryItem> = ArrayList()
@@ -32,6 +34,7 @@ class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPr
               mView.showImages(mData)
             },
             { error ->
+              mView.showToast(R.string.error_loading_gallery)
               Timber.e(error, "Error occurred while loading images")
             }
         )
@@ -45,6 +48,6 @@ class SearchResultsPresenterImpl(val mView: SearchResultsView) : SearchResultsPr
   }
 
   override fun onImageClicked(image: GalleryImage) {
-    mView.showImage(image.getLink())
+    mView.showImage(image)
   }
 }

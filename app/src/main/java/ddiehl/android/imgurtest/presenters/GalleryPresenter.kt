@@ -1,11 +1,11 @@
-package ddiehl.android.imgurtest.searchresults
+package ddiehl.android.imgurtest.presenters
 
-import ddiehl.android.imgurtest.BasePresenter
+import ddiehl.android.imgurtest.presenters.BasePresenter
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
 
-interface SearchResultsPresenter : BasePresenter {
+interface GalleryPresenter : BasePresenter {
   fun getNumImages(): Int
   fun getItemAt(position: Int): AbsGalleryItem
   fun onAlbumClicked(album: GalleryAlbum)

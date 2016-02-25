@@ -1,4 +1,4 @@
-package ddiehl.android.imgurtest.searchresults
+package ddiehl.android.imgurtest.view.gallery
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
@@ -9,19 +9,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import ddiehl.android.imgurtest.R
-import ddiehl.android.imgurtest.album.ViewAlbumDialog
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.presenters.GalleryPresenterImpl
 import ddiehl.android.imgurtest.utils.snack
+import ddiehl.android.imgurtest.view.images.ImagesDialog
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
-class SearchResultsFragment : Fragment(), SearchResultsView {
+class GalleryFragment : Fragment(), GalleryView {
 
-  private val mSearchResultsPresenter = SearchResultsPresenterImpl(this)
-  private val mAdapter = SearchResultsAdapter(mSearchResultsPresenter)
+  private val mGalleryPresenter = GalleryPresenterImpl(this)
+  private val mAdapter = GalleryAdapter(mGalleryPresenter)
   private lateinit var mRecyclerView: RecyclerView
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,11 +34,11 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
 
   override fun onResume() {
     super.onResume()
-    mSearchResultsPresenter.onResume()
+    mGalleryPresenter.onResume()
   }
 
   override fun onPause() {
-    mSearchResultsPresenter.onPause()
+    mGalleryPresenter.onPause()
     super.onPause()
   }
 
@@ -46,17 +47,17 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
   }
 
   override fun showAlbum(albumId: String) {
-    ViewAlbumDialog.newInstance(albumId)
+    ImagesDialog.newInstance(albumId)
         .show(activity.supportFragmentManager, "album_fragment")
   }
 
   override fun showImage(link: String) {
-    ViewAlbumDialog.newInstance(link)
+    ImagesDialog.newInstance(link)
         .show(activity.supportFragmentManager, "image_fragment")
   }
 
   override fun showImage(image: GalleryImage) {
-    ViewAlbumDialog.newInstance(image)
+    ImagesDialog.newInstance(image)
         .show(activity.supportFragmentManager, "image_fragment")
   }
 
@@ -65,8 +66,8 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
   }
 
   private val mUI: View by lazy {
-    object: AnkoComponent<SearchResultsFragment> {
-      override fun createView(ui: AnkoContext<SearchResultsFragment>): View =
+    object: AnkoComponent<GalleryFragment> {
+      override fun createView(ui: AnkoContext<GalleryFragment>): View =
           ui.apply {
             mRecyclerView = recyclerView {
               id = R.id.recycler_view
@@ -79,6 +80,6 @@ class SearchResultsFragment : Fragment(), SearchResultsView {
               //        layoutManager = LinearLayoutManager(ui.ctx)
             }
           }.view
-    }.createView(AnkoContext.create(activity, this@SearchResultsFragment))
+    }.createView(AnkoContext.create(activity, this@GalleryFragment))
   }
 }

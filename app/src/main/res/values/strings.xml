@@ -1,4 +1,5 @@
 <resources>
   <string name="app_name">Imgur</string>
   <string name="error_get_album">Error retrieving album images</string>
+  <string name="error_loading_gallery">Error loading gallery</string>
 </resources>

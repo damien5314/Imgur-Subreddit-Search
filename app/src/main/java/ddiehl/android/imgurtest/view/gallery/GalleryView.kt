@@ -1,10 +1,10 @@
-package ddiehl.android.imgurtest.searchresults
+package ddiehl.android.imgurtest.view.gallery
 
-import ddiehl.android.imgurtest.BaseView
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.view.BaseView
 
-interface SearchResultsView : BaseView {
+interface GalleryView : BaseView {
   fun showImages(list: List<AbsGalleryItem>)
   fun showAlbum(albumId: String)
   fun showImage(link: String)

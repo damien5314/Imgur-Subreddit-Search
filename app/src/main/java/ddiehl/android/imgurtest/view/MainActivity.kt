@@ -1,9 +1,10 @@
-package ddiehl.android.imgurtest
+package ddiehl.android.imgurtest.view
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import ddiehl.android.imgurtest.searchresults.SearchResultsFragment
+import ddiehl.android.imgurtest.R
+import ddiehl.android.imgurtest.view.gallery.GalleryFragment
 import org.jetbrains.anko.*
 
 class MainActivity : AppCompatActivity() {
@@ -11,7 +12,7 @@ class MainActivity : AppCompatActivity() {
     super.onCreate(savedInstanceState)
     MainActivity_UI().setContentView(this)
     supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment, SearchResultsFragment())
+        .replace(R.id.fragment, GalleryFragment())
         .commit()
   }
 

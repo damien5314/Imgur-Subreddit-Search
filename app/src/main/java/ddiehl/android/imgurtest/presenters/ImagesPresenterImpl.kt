@@ -1,20 +1,38 @@
-package ddiehl.android.imgurtest.album
+package ddiehl.android.imgurtest.presenters
 
+import android.text.TextUtils
 import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.api.ImgurService
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.view.images.ImagesView
 import timber.log.Timber
 import java.util.*
 
-class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPresenter {
+class ImagesPresenterImpl : ImagesPresenter {
 
   private val mImgurService: ImgurService = ImgurApplication.imgurService
   private val mData: MutableList<GalleryImage> = ArrayList()
 
+  private lateinit var mView: ImagesView
+  private lateinit var mURL: String
+
+  private constructor()
+
+  constructor(view: ImagesView, url: String) : this() {
+    mView = view
+    mURL = url
+  }
+
+  constructor(view: ImagesView, image: GalleryImage) : this(view, "") {
+    mData.add(image)
+  }
+
   override fun onResume() {
     if (mData.isEmpty()) {
       refreshData()
+    } else {
+      mView.showImages(mData)
     }
   }
 
@@ -22,7 +40,15 @@ class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPres
   }
 
   private fun refreshData() {
-    mImgurService.getAlbum(mAlbumId)
+    if (!TextUtils.isEmpty(mURL)) {
+      refreshData_album()
+    } else {
+      refreshData_image()
+    }
+  }
+
+  private fun refreshData_album() {
+    mImgurService.getAlbum(mURL)
         .subscribe(
             { response ->
               val album = response.body().data
@@ -34,6 +60,10 @@ class AlbumPresenterImpl(val mView: AlbumView, val mAlbumId: String) : AlbumPres
               Timber.e(error, "Error occurred while retrieving album data")
             }
         )
+  }
+
+  private fun refreshData_image() {
+
   }
 
   override fun getNumImages(): Int =

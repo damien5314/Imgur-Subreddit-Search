@@ -1,4 +1,4 @@
-package ddiehl.android.imgurtest
+package ddiehl.android.imgurtest.view
 
 import android.support.annotation.StringRes
 

@@ -1,4 +1,4 @@
-package ddiehl.android.imgurtest
+package ddiehl.android.imgurtest.api
 
 import android.util.Log
 import com.bumptech.glide.request.RequestListener

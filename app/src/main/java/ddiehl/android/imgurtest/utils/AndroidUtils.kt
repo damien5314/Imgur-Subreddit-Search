@@ -1,6 +1,7 @@
 package ddiehl.android.imgurtest.utils
 
 import android.os.Build
+import android.os.Parcel
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
 import android.view.View
@@ -31,4 +32,9 @@ fun WebView.disableWebViewZoomControls() {
       e.printStackTrace()
     }
   }
+}
+
+fun Parcel.readBoolean(): Boolean = readInt() == 1
+fun Parcel.writeBoolean(b: Boolean) {
+  writeInt(if (b) 1 else 0)
 }
