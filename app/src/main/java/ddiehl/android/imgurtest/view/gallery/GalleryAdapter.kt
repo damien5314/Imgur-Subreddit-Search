@@ -85,8 +85,10 @@ class GalleryAdapter(val mPresenter: GalleryPresenter)
             lparams {
               width = matchParent
               height = wrapContent
+              margin = dimen(R.dimen.gallery_image_margin)
             }
-            padding = dip(3)
+            padding = dimen(R.dimen.gallery_image_padding)
+            backgroundResource = R.drawable.gallery_image_bg
             squareImageView {
               id = R.id.image_view
               lparams {

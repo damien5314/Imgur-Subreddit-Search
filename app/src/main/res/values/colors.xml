@@ -28,4 +28,8 @@
   <color name="link_blue">#4E76C9</color>
   <color name="hover_gold">#C29F37</color>
 
+  <color name="imgur_black">#181817</color>
+  <color name="gallery_bg">#2b2b2b</color>
+  <color name="image_border">#444442</color>
+
 </resources>

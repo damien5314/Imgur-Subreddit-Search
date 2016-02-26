@@ -5,4 +5,8 @@
   <dimen name="images_count_bg_corners">8dp</dimen>
   <dimen name="images_count_bg_padding_vertical">0dp</dimen>
   <dimen name="images_count_bg_padding_horizontal">8dp</dimen>
+  <dimen name="gallery_image_margin">3dp</dimen>
+  <dimen name="gallery_image_padding">2dp</dimen>
+  <dimen name="gallery_image_bg_corner">4dp</dimen>
+  <dimen name="gallery_image_bg_padding">4dp</dimen>
 </resources>
