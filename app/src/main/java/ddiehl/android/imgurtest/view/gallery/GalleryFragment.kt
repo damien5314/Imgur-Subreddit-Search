@@ -1,10 +1,12 @@
 package ddiehl.android.imgurtest.view.gallery
 
 import android.os.Bundle
+import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,12 +14,13 @@ import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryImage
 import ddiehl.android.imgurtest.presenters.GalleryPresenterImpl
+import ddiehl.android.imgurtest.utils.dip2px
 import ddiehl.android.imgurtest.utils.isInPortrait
 import ddiehl.android.imgurtest.utils.snack
 import ddiehl.android.imgurtest.view.images.ImagesDialog
-import org.jetbrains.anko.AnkoComponent
-import org.jetbrains.anko.AnkoContext
-import org.jetbrains.anko.matchParent
+import org.jetbrains.anko.*
+import org.jetbrains.anko.design.coordinatorLayout
+import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class GalleryFragment : Fragment(), GalleryView {
@@ -25,13 +28,19 @@ class GalleryFragment : Fragment(), GalleryView {
   private val mGalleryPresenter = GalleryPresenterImpl(this)
   private val mAdapter = GalleryAdapter(mGalleryPresenter)
   private lateinit var mRecyclerView: RecyclerView
+  private lateinit var mSearchButton: FloatingActionButton
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
 
   override fun onCreateView(
-      inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? = mUI
+      inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
+      mUI.apply {
+        mSearchButton.setOnClickListener {
+          // TODO
+        }
+      }
 
   override fun onResume() {
     super.onResume()
@@ -70,15 +79,25 @@ class GalleryFragment : Fragment(), GalleryView {
     object: AnkoComponent<GalleryFragment> {
       override fun createView(ui: AnkoContext<GalleryFragment>): View =
           ui.apply {
-            mRecyclerView = recyclerView {
-              id = R.id.recycler_view
-              lparams {
-                width = matchParent
-                height = matchParent
+            coordinatorLayout {
+              mRecyclerView = recyclerView {
+                id = R.id.recycler_view
+                lparams {
+                  width = matchParent
+                  height = matchParent
+                }
+                val columns = if (isInPortrait(activity)) 3 else 5
+                layoutManager = GridLayoutManager(ui.ctx, columns, GridLayoutManager.VERTICAL, false)
+                adapter = mAdapter
               }
-              val columns = if (isInPortrait(activity)) 3 else 5
-              layoutManager = GridLayoutManager(ui.ctx, columns, GridLayoutManager.VERTICAL, false)
-              adapter = mAdapter
+              mSearchButton = floatingActionButton {
+                elevation = ui.ctx.dip2px(8)
+                setImageResource(R.drawable.ic_search_white_24dp)
+                lparams {
+                  margin = dimen(R.dimen.activity_horizontal_margin)
+                  gravity = Gravity.BOTTOM or Gravity.RIGHT
+                }
+              }
             }
           }.view
     }.createView(AnkoContext.create(activity, this@GalleryFragment))

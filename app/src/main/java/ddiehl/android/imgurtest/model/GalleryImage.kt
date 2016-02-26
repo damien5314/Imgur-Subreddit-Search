@@ -12,7 +12,7 @@ import org.parceler.Parcel
 @Parcel(Parcel.Serialization.BEAN)
 class GalleryImage(
     val id: String = "",
-    val title: String = "",
+    val title: String? = "",
     val description: String = "",
     val datetime: Long = 0L,
     val type: String = "",

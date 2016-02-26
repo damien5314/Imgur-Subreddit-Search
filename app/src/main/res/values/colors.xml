@@ -8,10 +8,10 @@
   <!--<color name="secondary_text">#727272</color>-->
 
   <!-- http://www.materialpalette.com/blue-grey/red -->
-  <color name="primary_light">#cfd8dc</color>
-  <color name="primary">#607d8b</color>
-  <color name="primary_dark">#455a64</color>
-  <color name="accent">#ff5252</color>
+  <color name="primary_light">@color/image_border</color>
+  <color name="primary">@color/gallery_bg</color>
+  <color name="primary_dark">@color/imgur_black</color>
+  <color name="accent">#455A64</color>
   <color name="primary_text">#212121</color>
   <color name="secondary_text">#727272</color>
   <color name="icons">#ffffff</color>

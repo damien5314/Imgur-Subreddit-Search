@@ -46,3 +46,6 @@ fun isInLandscape(ctx: Context) =
 
 fun isInPortrait(ctx: Context) =
     ctx.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+
+fun Context.dip2px(dip: Int): Float = dip.toFloat() * resources.displayMetrics.density
+fun Context.sp2px(sp: Int): Float = sp.toFloat() * resources.displayMetrics.scaledDensity
