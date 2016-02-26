@@ -71,4 +71,8 @@ class ImagesPresenterImpl : ImagesPresenter {
 
   override fun getImageAt(position: Int): GalleryImage =
       mData[position]
+
+  override fun onImageDisplayed(position: Int) {
+
+  }
 }

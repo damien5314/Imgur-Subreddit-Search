@@ -28,6 +28,14 @@ class ViewImageFragment : Fragment() {
     mUrl = arguments.getString(ARG_URL)
   }
 
+  override fun onResume() {
+    super.onResume()
+    Glide.with(this)
+        .load(mUrl)
+        .fitCenter()
+        .into(mImageView)
+  }
+
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
     return object: AnkoComponent<ViewImageFragment> {
@@ -49,12 +57,4 @@ class ViewImageFragment : Fragment() {
         }.view
       }
     }.createView(AnkoContext.create(activity, this)) }
-
-  override fun onResume() {
-    super.onResume()
-    Glide.with(this)
-        .load(mUrl)
-        .fitCenter()
-        .into(mImageView)
-  }
 }

@@ -17,6 +17,7 @@ import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
 import org.jetbrains.anko.support.v4.viewPager
+import org.parceler.Parcels
 
 class ImagesDialog : DialogFragment(), ImagesView {
   companion object {
@@ -33,7 +34,7 @@ class ImagesDialog : DialogFragment(), ImagesView {
     fun newInstance(image: GalleryImage): ImagesDialog =
         ImagesDialog().apply {
           arguments = Bundle().apply {
-            putParcelable(ARG_IMAGE, image)
+            putParcelable(ARG_IMAGE, Parcels.wrap(image))
           }
         }
   }
@@ -48,12 +49,14 @@ class ImagesDialog : DialogFragment(), ImagesView {
       val albumId = arguments.getString(ARG_ALBUM_ID)
       mImagesPresenter = ImagesPresenterImpl(this, albumId)
     } else if (arguments.containsKey(ARG_IMAGE)) {
-//      val image = Parcels.unwrap<GalleryImage>(arguments.getParcelable(ARG_IMAGE))
-      val image = arguments.getParcelable<GalleryImage>(ARG_IMAGE)
+      val image = Parcels.unwrap<GalleryImage>(arguments.getParcelable(ARG_IMAGE))
       mImagesPresenter = ImagesPresenterImpl(this, image)
     }
     mPagerAdapter = ImagesPagerAdapter(childFragmentManager, mImagesPresenter)
   }
+
+  override fun onCreateView(
+      inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = mUI
 
   override fun onCreateDialog(savedInstanceState: Bundle?): Dialog =
       Dialog(activity, R.style.DialogOverlay)
@@ -71,20 +74,23 @@ class ImagesDialog : DialogFragment(), ImagesView {
     view?.snack(stringRes, Snackbar.LENGTH_SHORT)
   }
 
-  override fun onCreateView(
-      inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-      object: AnkoComponent<ImagesDialog> {
-        override fun createView(ui: AnkoContext<ImagesDialog>): View {
-          return ui.apply {
-            mViewPager = viewPager {
-              id = R.id.view_pager
-              lparams {
-                width = matchParent
-                height = matchParent
-              }
-              adapter = mPagerAdapter
+  private val mUI by lazy { object: AnkoComponent<ImagesDialog> {
+    override fun createView(ui: AnkoContext<ImagesDialog>): View {
+      return ui.apply {
+        mViewPager = viewPager {
+          id = R.id.view_pager
+          lparams {
+            width = matchParent
+            height = matchParent
+          }
+          adapter = mPagerAdapter
+          addOnPageChangeListener(object: ViewPager.SimpleOnPageChangeListener() {
+            override fun onPageSelected(position: Int) {
+              mImagesPresenter.onImageDisplayed(position)
             }
-          }.view
+          })
         }
-      }.createView(AnkoContext.create(activity, this))
+      }.view
+    }
+  }.createView(AnkoContext.create(activity, this)) }
 }

@@ -1,4 +1,7 @@
 package ddiehl.android.imgurtest.model
 
-class Comment {
+import org.parceler.Parcel
+
+@Parcel(Parcel.Serialization.BEAN)
+class Comment() {
 }

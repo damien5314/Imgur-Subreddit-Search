@@ -10,13 +10,8 @@ class ImagesPagerAdapter(
 
   override fun getItem(position: Int): Fragment? {
     val image = mPresenter.getImageAt(position)
-    val i = image.gifv!!.indexOf('.')
-    val url =
-        if (image.animated)
-          image.gifv.substring(0, image.gifv.lastIndexOf('/')+1) + image.id + ".gif"
-        else
-          image.getLink()
-    return ViewImageFragment.newInstance(url)
+    if (image.animated) return ViewAnimatedImageFragment.newInstance(image.mp4!!)
+    else return ViewImageFragment.newInstance(image.getLink())
   }
 
   override fun getCount(): Int = mPresenter.getNumImages()

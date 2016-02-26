@@ -86,6 +86,7 @@ class GalleryAdapter(val mPresenter: GalleryPresenter)
               width = matchParent
               height = wrapContent
             }
+            padding = dip(3)
             squareImageView {
               id = R.id.image_view
               lparams {
@@ -101,7 +102,6 @@ class GalleryAdapter(val mPresenter: GalleryPresenter)
               }
               gravity = Gravity.CENTER
               setTextAppearance(android.R.style.TextAppearance_Small)
-//              textColor = R.color.primary_text
               backgroundResource = R.drawable.images_count_bg
             }
           }

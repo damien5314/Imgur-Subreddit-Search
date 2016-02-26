@@ -5,6 +5,7 @@ import ddiehl.android.imgurtest.BuildConfig
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryDeserializer
+import ddiehl.android.imgurtest.model.GalleryResponse
 import okhttp3.OkHttpClient
 import retrofit2.Response
 import retrofit2.Retrofit
@@ -45,7 +46,7 @@ class ImgurServiceImpl : ImgurService {
   }
 
   override fun getGallery(section: String, sort: String, page: Int)
-      : Observable<Response<AbsGalleryItem.Response>> =
+      : Observable<Response<GalleryResponse>> =
       mAPI.getGallery(section, sort, page)
           .subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
