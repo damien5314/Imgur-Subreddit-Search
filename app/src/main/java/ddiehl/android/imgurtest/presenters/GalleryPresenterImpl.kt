@@ -30,8 +30,13 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
     mImgurService.getGallery("gallery", "hot", mPage)
         .subscribe(
             { imageResponse ->
-              mData.addAll(imageResponse.body().data)
-              mView.showImages(mData)
+              if (imageResponse.body() != null && imageResponse.body().code == 200) {
+                mData.addAll(imageResponse.body().data)
+                mView.showImages(mData)
+              } else {
+                mView.showToast(R.string.error_loading_gallery)
+                Timber.e("Error occurred while loading images")
+              }
             },
             { error ->
               mView.showToast(R.string.error_loading_gallery)

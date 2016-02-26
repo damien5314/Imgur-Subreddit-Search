@@ -14,7 +14,7 @@ fun printResponseStatus(response: Response) {
   Timber.d(response.toString())
 }
 
-fun View.snack(@StringRes resId: Int, duration: Int) = Snackbar.make(this, resId, duration)
+fun View.snack(@StringRes resId: Int, duration: Int) = Snackbar.make(this, resId, duration).show()
 
 fun WebView.disableWebViewZoomControls() {
   settings.setSupportZoom(true)

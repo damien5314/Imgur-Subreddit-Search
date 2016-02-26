@@ -62,7 +62,7 @@ class GalleryFragment : Fragment(), GalleryView {
   }
 
   override fun showToast(stringRes: Int) {
-    activity.window.decorView.snack(stringRes, Snackbar.LENGTH_SHORT)
+    mUI.snack(stringRes, Snackbar.LENGTH_SHORT)
   }
 
   private val mUI: View by lazy {
@@ -77,7 +77,6 @@ class GalleryFragment : Fragment(), GalleryView {
               }
               layoutManager = GridLayoutManager(ui.ctx, 3, GridLayoutManager.VERTICAL, false)
               adapter = mAdapter
-              //        layoutManager = LinearLayoutManager(ui.ctx)
             }
           }.view
     }.createView(AnkoContext.create(activity, this@GalleryFragment))
