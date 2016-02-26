@@ -30,7 +30,7 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
     mImgurService.getGallery("gallery", "hot", mPage)
         .subscribe(
             { imageResponse ->
-              if (imageResponse.body() != null && imageResponse.body().code == 200) {
+              if (imageResponse.body() != null && imageResponse.body().status == 200) {
                 mData.addAll(imageResponse.body().data)
                 mView.showImages(mData)
               } else {

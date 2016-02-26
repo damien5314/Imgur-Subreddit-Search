@@ -34,7 +34,7 @@ class GalleryAlbum(
   class Response (
       @Expose val data: GalleryAlbum,
       @Expose val success: Boolean,
-      @Expose val code: Int
+      @Expose val status: Int
   )
 
   fun getRawCover() = getCover("")

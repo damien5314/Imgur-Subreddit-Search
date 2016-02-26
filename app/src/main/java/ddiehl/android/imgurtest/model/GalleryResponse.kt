@@ -5,5 +5,5 @@ import com.google.gson.annotations.Expose
 class GalleryResponse(
   @Expose val data: List<AbsGalleryItem>,
   @Expose val success: Boolean,
-  @Expose val code: Int
+  @Expose val status: Int
 )

@@ -12,6 +12,7 @@ import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryImage
 import ddiehl.android.imgurtest.presenters.GalleryPresenterImpl
+import ddiehl.android.imgurtest.utils.isInPortrait
 import ddiehl.android.imgurtest.utils.snack
 import ddiehl.android.imgurtest.view.images.ImagesDialog
 import org.jetbrains.anko.AnkoComponent
@@ -75,7 +76,8 @@ class GalleryFragment : Fragment(), GalleryView {
                 width = matchParent
                 height = matchParent
               }
-              layoutManager = GridLayoutManager(ui.ctx, 3, GridLayoutManager.VERTICAL, false)
+              val columns = if (isInPortrait(activity)) 3 else 5
+              layoutManager = GridLayoutManager(ui.ctx, columns, GridLayoutManager.VERTICAL, false)
               adapter = mAdapter
             }
           }.view

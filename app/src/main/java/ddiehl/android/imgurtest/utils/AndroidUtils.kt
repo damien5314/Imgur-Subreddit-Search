@@ -1,5 +1,7 @@
 package ddiehl.android.imgurtest.utils
 
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Build
 import android.os.Parcel
 import android.support.annotation.StringRes
@@ -38,3 +40,9 @@ fun Parcel.readBoolean(): Boolean = readInt() == 1
 fun Parcel.writeBoolean(b: Boolean) {
   writeInt(if (b) 1 else 0)
 }
+
+fun isInLandscape(ctx: Context) =
+    ctx.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+
+fun isInPortrait(ctx: Context) =
+    ctx.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
