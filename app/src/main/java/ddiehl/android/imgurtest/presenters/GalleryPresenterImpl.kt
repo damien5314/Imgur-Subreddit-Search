@@ -6,6 +6,7 @@ import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
 import ddiehl.android.imgurtest.view.gallery.GalleryView
+import rx.functions.Action1
 import timber.log.Timber
 import java.util.*
 
@@ -33,16 +34,16 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
               if (imageResponse.body() != null && imageResponse.body().status == 200) {
                 mData.addAll(imageResponse.body().data)
                 mView.showImages(mData)
-              } else {
-                mView.showToast(R.string.error_loading_gallery)
-                Timber.e("Error occurred while loading images")
-              }
-            },
-            { error ->
-              mView.showToast(R.string.error_loading_gallery)
-              Timber.e(error, "Error occurred while loading images")
-            }
+              } else { onError().call(null) }
+            }, { onError() }
         )
+  }
+
+  private fun onError(): Action1<Throwable> {
+    return Action1 { error ->
+      mView.showToast(R.string.error_loading_gallery)
+      Timber.e(error, "Error occurred while loading images")
+    }
   }
 
   override fun getNumImages(): Int = mData.size
