@@ -6,7 +6,10 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.view.gallery.GalleryFragment
-import org.jetbrains.anko.*
+import org.jetbrains.anko.AnkoComponent
+import org.jetbrains.anko.AnkoContext
+import org.jetbrains.anko.frameLayout
+import org.jetbrains.anko.matchParent
 
 class MainActivity : AppCompatActivity(), MainView {
 
@@ -27,7 +30,7 @@ class MainActivity : AppCompatActivity(), MainView {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    MainActivity_UI().setContentView(this)
+    setContentView(UI())
     val fragment = supportFragmentManager.findFragmentById(R.id.fragment)
     if (fragment == null) {
       supportFragmentManager.beginTransaction()
@@ -36,7 +39,7 @@ class MainActivity : AppCompatActivity(), MainView {
     }
   }
 
-  private class MainActivity_UI : AnkoComponent<MainActivity> {
+  private fun UI(): View = object: AnkoComponent<MainActivity> {
     override fun createView(ui: AnkoContext<MainActivity>): View =
         ui.apply {
           frameLayout {
@@ -47,10 +50,5 @@ class MainActivity : AppCompatActivity(), MainView {
             }
           }
         }.view
-  }
-}
-
-interface MainView {
-  fun showSpinner()
-  fun dismissSpinner()
+  }.createView(AnkoContext.create(this, this))
 }
