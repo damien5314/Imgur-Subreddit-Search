@@ -13,6 +13,7 @@ import ddiehl.android.imgurtest.model.GalleryImage
 import ddiehl.android.imgurtest.presenters.ImagesPresenter
 import ddiehl.android.imgurtest.presenters.ImagesPresenterImpl
 import ddiehl.android.imgurtest.utils.snack
+import ddiehl.android.imgurtest.view.MainView
 import org.jetbrains.anko.AnkoComponent
 import org.jetbrains.anko.AnkoContext
 import org.jetbrains.anko.matchParent
@@ -47,10 +48,10 @@ class ImagesDialog : DialogFragment(), ImagesView {
     super.onCreate(savedInstanceState)
     if (arguments.containsKey(ARG_ALBUM_ID)) {
       val albumId = arguments.getString(ARG_ALBUM_ID)
-      mImagesPresenter = ImagesPresenterImpl(this, albumId)
+      mImagesPresenter = ImagesPresenterImpl(activity as MainView, this, albumId)
     } else if (arguments.containsKey(ARG_IMAGE)) {
       val image = Parcels.unwrap<GalleryImage>(arguments.getParcelable(ARG_IMAGE))
-      mImagesPresenter = ImagesPresenterImpl(this, image)
+      mImagesPresenter = ImagesPresenterImpl(activity as MainView, this, image)
     }
     mPagerAdapter = ImagesPagerAdapter(childFragmentManager, mImagesPresenter)
   }

@@ -6,13 +6,15 @@ import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
 import ddiehl.android.imgurtest.model.GalleryResponse
+import ddiehl.android.imgurtest.view.MainView
 import ddiehl.android.imgurtest.view.gallery.GalleryView
 import retrofit2.Response
 import rx.functions.Action1
 import timber.log.Timber
 import java.util.*
 
-class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
+class GalleryPresenterImpl(
+    private val mMainView: MainView, private val mView: GalleryView) : GalleryPresenter {
 
   private val mImgurService = ImgurApplication.imgurService
   private val mData: MutableList<AbsGalleryItem> = ArrayList()
@@ -39,9 +41,13 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
     val subreddit = mSubreddit
     if (subreddit == null) {
       mImgurService.getGallery("gallery", "hot", mPage)
+          .doOnSubscribe { mMainView.showSpinner() }
+          .doOnTerminate { mMainView.dismissSpinner() }
           .subscribe(onImagesLoaded(), onError())
     } else {
       mImgurService.getSubreddit(subreddit, mPage)
+          .doOnSubscribe { mMainView.showSpinner() }
+          .doOnTerminate { mMainView.dismissSpinner() }
           .subscribe(onImagesLoaded(), onError())
     }
   }

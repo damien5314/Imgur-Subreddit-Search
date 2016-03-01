@@ -5,6 +5,7 @@ import ddiehl.android.imgurtest.ImgurApplication
 import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.api.ImgurService
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.view.MainView
 import ddiehl.android.imgurtest.view.images.ImagesView
 import timber.log.Timber
 import java.util.*
@@ -14,17 +15,20 @@ class ImagesPresenterImpl : ImagesPresenter {
   private val mImgurService: ImgurService = ImgurApplication.imgurService
   private val mData: MutableList<GalleryImage> = ArrayList()
 
+  private lateinit var mMainView: MainView
   private lateinit var mView: ImagesView
   private lateinit var mURL: String
 
   private constructor()
 
-  constructor(view: ImagesView, url: String) : this() {
+  constructor(mainView: MainView, view: ImagesView, url: String) : this() {
+    mMainView = mainView
     mView = view
     mURL = url
   }
 
-  constructor(view: ImagesView, image: GalleryImage) : this(view, "") {
+  constructor(mainView: MainView, view: ImagesView, image: GalleryImage)
+      : this(mainView, view, "") {
     mData.add(image)
   }
 
@@ -49,6 +53,8 @@ class ImagesPresenterImpl : ImagesPresenter {
 
   private fun refreshData_album() {
     mImgurService.getAlbum(mURL)
+        .doOnSubscribe { mMainView.showSpinner() }
+        .doOnTerminate { mMainView.dismissSpinner() }
         .subscribe(
             { response ->
               val album = response.body().data

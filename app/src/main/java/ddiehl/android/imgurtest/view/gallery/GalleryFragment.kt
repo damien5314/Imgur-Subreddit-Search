@@ -17,6 +17,7 @@ import ddiehl.android.imgurtest.presenters.GalleryPresenterImpl
 import ddiehl.android.imgurtest.utils.dip2px
 import ddiehl.android.imgurtest.utils.isInPortrait
 import ddiehl.android.imgurtest.utils.snack
+import ddiehl.android.imgurtest.view.MainView
 import ddiehl.android.imgurtest.view.images.ImagesDialog
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.coordinatorLayout
@@ -24,9 +25,10 @@ import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 import timber.log.Timber
 
-class GalleryFragment : Fragment(), GalleryView, SubredditNavigationDialog.Callbacks {
+class GalleryFragment(private val mMainView: MainView) :
+    Fragment(), GalleryView, SubredditNavigationDialog.Callbacks {
 
-  private val mGalleryPresenter = GalleryPresenterImpl(this)
+  private val mGalleryPresenter = GalleryPresenterImpl(mMainView, this)
   private val mAdapter = GalleryAdapter(mGalleryPresenter)
   private lateinit var mRecyclerView: RecyclerView
   private lateinit var mSearchButton: FloatingActionButton
@@ -106,7 +108,6 @@ class GalleryFragment : Fragment(), GalleryView, SubredditNavigationDialog.Callb
               }
               mSearchButton = floatingActionButton {
                 elevation = ui.ctx.dip2px(8)
-//                setElevation(8f)
                 setImageResource(R.drawable.ic_search_white_24dp)
                 lparams {
                   margin = dimen(R.dimen.activity_horizontal_margin)
