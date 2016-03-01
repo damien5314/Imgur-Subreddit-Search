@@ -55,4 +55,9 @@ class ImgurServiceImpl : ImgurService {
       mAPI.getAlbum(id)
           .subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
           .observeOn(AndroidSchedulers.mainThread())
+
+  override fun getSubreddit(subreddit: String, page: Int): Observable<Response<GalleryResponse>> =
+      mAPI.getSubreddit(subreddit, page)
+          .subscribeOn(Schedulers.io()).unsubscribeOn(Schedulers.io())
+          .observeOn(AndroidSchedulers.mainThread())
 }

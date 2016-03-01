@@ -2,10 +2,14 @@ package ddiehl.android.imgurtest.utils
 
 import android.content.Context
 import android.content.res.Configuration
+import android.graphics.PorterDuff
 import android.os.Build
 import android.os.Parcel
+import android.support.annotation.ColorRes
+import android.support.annotation.DrawableRes
 import android.support.annotation.StringRes
 import android.support.design.widget.Snackbar
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.webkit.WebView
 import android.widget.ZoomButtonsController
@@ -49,3 +53,8 @@ fun isInPortrait(ctx: Context) =
 
 fun Context.dip2px(dip: Int): Float = dip.toFloat() * resources.displayMetrics.density
 fun Context.sp2px(sp: Int): Float = sp.toFloat() * resources.displayMetrics.scaledDensity
+
+fun getTintedDrawable(context: Context, @DrawableRes id: Int, @ColorRes color: Int) =
+    context.getDrawable(id).apply {
+      setColorFilter(ContextCompat.getColor(context, color), PorterDuff.Mode.SRC_IN)
+    }

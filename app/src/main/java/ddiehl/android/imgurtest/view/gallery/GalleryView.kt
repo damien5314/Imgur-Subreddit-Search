@@ -9,4 +9,5 @@ interface GalleryView : BaseView {
   fun showAlbum(albumId: String)
   fun showImage(link: String)
   fun showImage(image: GalleryImage)
+  fun notifyDataCleared(numItems: Int)
 }

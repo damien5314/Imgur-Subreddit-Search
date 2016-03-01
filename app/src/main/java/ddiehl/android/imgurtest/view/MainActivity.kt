@@ -11,9 +11,12 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     MainActivity_UI().setContentView(this)
-    supportFragmentManager.beginTransaction()
-        .replace(R.id.fragment, GalleryFragment())
-        .commit()
+    val fragment = supportFragmentManager.findFragmentById(R.id.fragment)
+    if (fragment == null) {
+      supportFragmentManager.beginTransaction()
+          .replace(R.id.fragment, GalleryFragment())
+          .commit()
+    }
   }
 
   private class MainActivity_UI : AnkoComponent<MainActivity> {

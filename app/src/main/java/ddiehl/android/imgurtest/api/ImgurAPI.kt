@@ -20,4 +20,10 @@ interface ImgurAPI {
       @Path("id") id: String
   ): Observable<Response<GalleryAlbum.Response>>
 
+  @GET("/3/gallery/r/{subreddit}/{sort}/{page}")
+  fun getSubreddit(
+      @Path("subreddit") subreddit: String,
+      @Path("page") page: Int = 0,
+      @Path("sort") sort: String = "time"
+  ): Observable<Response<GalleryResponse>>
 }

@@ -22,8 +22,9 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.design.coordinatorLayout
 import org.jetbrains.anko.design.floatingActionButton
 import org.jetbrains.anko.recyclerview.v7.recyclerView
+import timber.log.Timber
 
-class GalleryFragment : Fragment(), GalleryView {
+class GalleryFragment : Fragment(), GalleryView, SubredditNavigationDialog.Callbacks {
 
   private val mGalleryPresenter = GalleryPresenterImpl(this)
   private val mAdapter = GalleryAdapter(mGalleryPresenter)
@@ -32,13 +33,15 @@ class GalleryFragment : Fragment(), GalleryView {
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
+    retainInstance = true
   }
 
   override fun onCreateView(
       inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-      mUI.apply {
+      mUI().apply {
         mSearchButton.setOnClickListener {
-          // TODO
+          SubredditNavigationDialog(this@GalleryFragment)
+              .show(activity.supportFragmentManager, "dialog_navigate")
         }
       }
 
@@ -71,12 +74,23 @@ class GalleryFragment : Fragment(), GalleryView {
         .show(activity.supportFragmentManager, "image_fragment")
   }
 
-  override fun showToast(stringRes: Int) {
-    mUI.snack(stringRes, Snackbar.LENGTH_SHORT)
+  override fun onSubredditNavigationConfirmed(subreddit: String) {
+    Timber.d("Subreddit navigation requested: " + subreddit)
+    mGalleryPresenter.onSubredditNavigationRequested(subreddit)
   }
 
-  private val mUI: View by lazy {
-    object: AnkoComponent<GalleryFragment> {
+  override fun onSubredditNavigationCancelled() { }
+
+  override fun showToast(stringRes: Int) {
+    mRecyclerView.snack(stringRes, Snackbar.LENGTH_SHORT)
+  }
+
+  override fun notifyDataCleared(numItems: Int) {
+    mAdapter.notifyItemRangeRemoved(0, numItems)
+  }
+
+  private fun mUI(): View {
+    return object: AnkoComponent<GalleryFragment> {
       override fun createView(ui: AnkoContext<GalleryFragment>): View =
           ui.apply {
             coordinatorLayout {
@@ -92,6 +106,7 @@ class GalleryFragment : Fragment(), GalleryView {
               }
               mSearchButton = floatingActionButton {
                 elevation = ui.ctx.dip2px(8)
+//                setElevation(8f)
                 setImageResource(R.drawable.ic_search_white_24dp)
                 lparams {
                   margin = dimen(R.dimen.activity_horizontal_margin)

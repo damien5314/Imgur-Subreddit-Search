@@ -12,4 +12,6 @@ interface ImgurService {
 
   fun getAlbum(id: String) : Observable<Response<GalleryAlbum.Response>>
 
+  fun getSubreddit(subreddit: String, page: Int): Observable<Response<GalleryResponse>>
+
 }

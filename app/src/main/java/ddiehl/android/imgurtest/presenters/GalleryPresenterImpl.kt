@@ -5,7 +5,9 @@ import ddiehl.android.imgurtest.R
 import ddiehl.android.imgurtest.model.AbsGalleryItem
 import ddiehl.android.imgurtest.model.GalleryAlbum
 import ddiehl.android.imgurtest.model.GalleryImage
+import ddiehl.android.imgurtest.model.GalleryResponse
 import ddiehl.android.imgurtest.view.gallery.GalleryView
+import retrofit2.Response
 import rx.functions.Action1
 import timber.log.Timber
 import java.util.*
@@ -15,6 +17,7 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
   private val mImgurService = ImgurApplication.imgurService
   private val mData: MutableList<AbsGalleryItem> = ArrayList()
   private var mPage = 0
+  private var mSubreddit: String? = null
 
   override fun onResume() {
     if (mData.isEmpty()) {
@@ -27,16 +30,29 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
   }
 
   private fun refreshData() {
+    if (mData.size > 0) {
+      val numItems = mData.size
+      mData.clear()
+      mView.notifyDataCleared(numItems)
+    }
     mPage = 0
-    mImgurService.getGallery("gallery", "hot", mPage)
-        .subscribe(
-            { imageResponse ->
-              if (imageResponse.body() != null && imageResponse.body().status == 200) {
-                mData.addAll(imageResponse.body().data)
-                mView.showImages(mData)
-              } else { onError().call(null) }
-            }, { onError() }
-        )
+    val subreddit = mSubreddit
+    if (subreddit == null) {
+      mImgurService.getGallery("gallery", "hot", mPage)
+          .subscribe(onImagesLoaded(), onError())
+    } else {
+      mImgurService.getSubreddit(subreddit, mPage)
+          .subscribe(onImagesLoaded(), onError())
+    }
+  }
+
+  private fun onImagesLoaded(): Action1<Response<GalleryResponse>> {
+    return Action1 { imageResponse ->
+      if (imageResponse.body() != null && imageResponse.body().status == 200) {
+        mData.addAll(imageResponse.body().data)
+        mView.showImages(mData)
+      } else { onError().call(null) }
+    }
   }
 
   private fun onError(): Action1<Throwable> {
@@ -55,5 +71,10 @@ class GalleryPresenterImpl(val mView: GalleryView) : GalleryPresenter {
 
   override fun onImageClicked(image: GalleryImage) {
     mView.showImage(image)
+  }
+
+  override fun onSubredditNavigationRequested(subreddit: String) {
+    mSubreddit = subreddit
+    refreshData()
   }
 }
